@@ -49,9 +49,9 @@ Left-clicking and draging anywhere on the contact map displayed will highlight t
 Overlays
 --------
 1. Secondary Structure of the protein as strips of color (Secondary Structure). This button won't be active if secondary structure calculation program stride is not installed.
-2. Regions where a Charge-Charge interaction occurs (Charged Interactions)
-3. Residues that interact by a hydrophobic interaction (Hydrophobic Interactions)
-4. Contact regions that have a b-factor that is higher than a certain cutoff that is fixed by a slider (B-factor and slider below the button).
+2. Contact regions where a Charge-Charge interaction occurs (Charged Interactions)
+3. Residues that interact via a hydrophobic interaction (Hydrophobic Interactions)
+4. Contact regions that have a b-factor that is higher than a certain cutoff (B-factor). The cutoff can be varied using a slider (slider below the button).
 5. Highlights a contact point/region where a pair of residues are in contact. If only one aminoacid is selected from the list, interaction site of the selected aminoacid with another on of the same type is highlighted.
 
 Plots
