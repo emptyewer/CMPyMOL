@@ -2,9 +2,9 @@
 
 
 '''
-CMapper 1.0
+CMPyMOL 1.0
 
-http://pymolwiki.org/index.php/CMapper
+http://pymolwiki.org/index.php/CMPyMOL
 
 Author: Venkatramanan Krishnamani (Version 1.0)
 
@@ -18,7 +18,7 @@ Author: Venkatramanan Krishnamani (Version 1.0)
 # the copyright notices.
 # 
 # -----------------------------------------------------------------------------------
-# CMapper
+# CMPyMOL
 # Copyright (C) 2013 by Venkatramanan Krishnamani <venks@andrew.cmu.edu>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this 
@@ -164,7 +164,7 @@ class InitialChecks:
             stridepath = stride_loc[1]
             print ">>> Stride located at", stridepath
         else:
-            print "*** Error: Cannot locate STRIDE path. Please install from http://webclu.bio.wzw.tum.de/stride/."
+            print "*** Warning: Cannot locate STRIDE path. Please install from http://webclu.bio.wzw.tum.de/stride/."
             print "*** Note: Secondary structure calculations will be disabled."
 
         pymol_loc = cmd_exists("pymol")
@@ -205,7 +205,7 @@ class InitialChecks:
                 distance_cutoff = float(dlg2.GetValue())
                 print ">>> Maximum distance between C-alpha atoms that define a contact : %s" % distance_cutoff
             else:
-                print "*** Warning: No distance cutoff was set. Using default value of 10.0 angstrom."
+                print "*** Warning: No distance cutoff was set. Using default value of 12.0 angstrom."
                 print ">>> Maximum distance between C-alpha atoms that define a contact : %s" % distance_cutoff
                 distance_cutoff = 12.0
         finally:
@@ -1057,7 +1057,7 @@ class MouseMonitor:
             b.label.set_fontsize(11.0)
             b = Button(ax=plt.axes([0.55, 0.047, 0.073, 0.03]), label='B-factor', color=(0.0,1.0,1.0,0.6))
             b.label.set_fontsize(11.0)
-            b = Button(ax=plt.axes([0.63, 0.047, 0.073, 0.03]), label='Custom', color=(1.0,0.52,0.0,1.0))
+            b = Button(ax=plt.axes([0.63, 0.047, 0.073, 0.03]), label='Pair', color=(1.0,0.52,0.0,1.0))
             b.label.set_fontsize(11.0)
             b = Button(ax=plt.axes([0.71, 0.047, 0.073, 0.03]), label='Selection', color=(1.0,0.0,1.0,0.6))
             b.label.set_fontsize(11.0)
@@ -1079,6 +1079,8 @@ class MouseMonitor:
             #Secondary Structure button
             ax_ss = plt.axes([0.86, 0.81, 0.12, 0.065])
             self.bss = Button(ax=ax_ss, label='Secondary\nStructure', color='#FFFFFF', hovercolor=(1.0,0.0,0.0,0.7))
+            if stridepath == '':
+                self.bss.active = False
             # Charged interactions button
             ax_charge = plt.axes([0.86, 0.73, 0.12, 0.065])
             self.bcharge = Button(ax_charge, 'Charged\nInteractions', color='#FFFFFF', hovercolor=(0.0,0.0,1.0,0.6))
