@@ -2,11 +2,11 @@
 
 
 '''
-CMPyMOL 1.0
+CMPyMOL 1.0b
 
 http://pymolwiki.org/index.php/CMPyMOL
 
-Author: Venkatramanan Krishnamani (Version 1.0)
+Author: Venkatramanan Krishnamani (Version 1.0b)
 
 '''
 

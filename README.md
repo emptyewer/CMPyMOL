@@ -1,6 +1,6 @@
 CMPyMOL
 =======
-CMPyMOL combines the 3D visualization capabilities of PyMol and protein contact map into a rich and intuitive tool for scientific analysis. This software is freely distributed under the MIT license for Linux and Mac OS X platforms.
+CMPyMOL combines the 3D visualization capabilities of PyMOL and protein contact map into a rich and intuitive tool for scientific analysis. This software is freely distributed under the MIT license for Linux and Mac OS X platforms.
 
 Website
 =======
