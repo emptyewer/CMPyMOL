@@ -1131,9 +1131,9 @@ class PDBfunctions:
         count = 0
         for line in pdbhandle:
             line = line.rstrip()
-            pdbarray.append(line)
             line_list = list(line)
-            if re.match(r'ATOM', ''.join(line_list[0:6]).strip()) and re.match(r'CA', ''.join(line_list[12:16]).strip()):
+            if re.match(r'ATOM', ''.join(line_list[0:6]).strip()) and re.match(r'CA', ''.join(line_list[12:16]).strip()) and ''.join(line_list[17:20]).strip() in aa:
+                pdbarray.append(line)
                 count = count + 1
         pdbhandle.close()
 
@@ -1159,25 +1159,20 @@ class PDBfunctions:
         row = 0
         for line1 in pdbarray:
             line_list1 = list(line1.rstrip())
-            if re.match(r'ATOM', ''.join(line_list1[0:6]).strip()) and ''.join(line_list1[17:20]).strip() in aa and re.match(r'CA', ''.join(line_list1[12:16]).strip()):
-                col = 0
-                for line2 in pdbarray:
-                    line_list2 = list(line2.rstrip())
-                    if re.match(r'ATOM', ''.join(line_list2[0:6]).strip()) and ''.join(line_list2[17:20]).strip() in aa and re.match(r'CA', ''.join(line_list2[12:16]).strip()):
-                        dist = _calc_dist(np.array([float(''.join(line_list1[30:38]).strip()), float(''.join(line_list1[38:46]).strip()), float(''.join(line_list1[46:54]).strip())]), np.array([float(''.join(line_list2[30:38]).strip()), float(''.join(line_list2[38:46]).strip()), float(''.join(line_list2[46:54]).strip())]))
-                        if (dist <= distance_cutoff):
-                            matrix[row, col] = dist
-                            condensmap[row] = condensmap[row] + 1
-                            if (col > row):
-                                heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()] = heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()] + 1
-                                pix = aa.index(''.join(line_list1[17:20]).strip())*len(aa) + aa.index(''.join(line_list2[17:20]))
-                                heatmap_img[pix] = heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()]
-                        col = col + 1
-                    else:
-                        continue
-                row = row + 1
-            else:
-                continue
+            col = row
+            for line2 in pdbarray[col:]:
+                line_list2 = list(line2.rstrip())
+                dist = _calc_dist(np.array([float(''.join(line_list1[30:38]).strip()), float(''.join(line_list1[38:46]).strip()), float(''.join(line_list1[46:54]).strip())]), np.array([float(''.join(line_list2[30:38]).strip()), float(''.join(line_list2[38:46]).strip()), float(''.join(line_list2[46:54]).strip())]))
+                if (dist <= distance_cutoff):
+                    matrix[row, col] = dist
+                    matrix[col, row] = dist
+                    if (col > row):
+                        condensmap[row] = condensmap[row] + 1
+                        heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()] = heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()] + 1
+                        pix = aa.index(''.join(line_list1[17:20]).strip())*len(aa) + aa.index(''.join(line_list2[17:20]))
+                        heatmap_img[pix] = heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()]
+                col = col + 1
+            row = row + 1
         heatmap_img = heatmap_img.reshape((len(aa), len(aa)))
         return matrix
     
