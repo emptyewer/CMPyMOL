@@ -102,12 +102,12 @@ aa_calculated = 0               # (Boolean) If Aminoacid overlay is previously c
 aa_img_inst = None              # (matplotlib.image.AxesImage) Aminoacids Overlay       
 # Heatmap
 
-heatmap_img = None              # (PIL.Image) Aminoacid-Aminoacid Contacts Image
+heatmap_img = {}              # (PIL.Image) Aminoacid-Aminoacid Contacts Image
 heatmap_calculated = 0          # (Boolean) Aminoacid-Aminoacid Contacts previously calculated
 # Contact Density Map
 condensmap = {}                 # (Dictionary) Contact Density Count
 condensmap_calculated = 0       # (Boolean) If Contact Density Map Calculated
-protein_sequence = ''
+#protein_sequence = ''
 progressbar = None
 #
 residue_index_map = {}
@@ -199,15 +199,15 @@ class InitialChecks:
             dlg1.Destroy()
             wx.YieldIfNeeded()
 
-        dlg2 = wx.TextEntryDialog(None, "Maximum distance between a pair of C-alpha atoms that defines a contact.","Maximum distance cutoff", "12.0")
+        dlg2 = wx.TextEntryDialog(None, "Maximum distance between a pair of C-alpha atoms that defines a contact.","Maximum distance cutoff", "10.0")
         try:
             if dlg2.ShowModal() == wx.ID_OK:
                 distance_cutoff = float(dlg2.GetValue())
                 print ">>> Maximum distance between C-alpha atoms that define a contact : %s" % distance_cutoff
             else:
-                print "*** Warning: No distance cutoff was set. Using default value of 12.0 angstrom."
+                print "*** Warning: No distance cutoff was set. Using default value of 10.0 angstrom."
                 print ">>> Maximum distance between C-alpha atoms that define a contact : %s" % distance_cutoff
-                distance_cutoff = 12.0
+                distance_cutoff = 10.0
         finally:
             dlg2.Destroy()
             wx.YieldIfNeeded()
@@ -640,7 +640,7 @@ class Load:
                 dlg1.Destroy()
                 wx.YieldIfNeeded()
 
-            dlg2 = wx.TextEntryDialog(None, "Maximum distance between a pair of C-alpha atoms that defines a contact.","Maximum distance cutoff", "12.0")
+            dlg2 = wx.TextEntryDialog(None, "Maximum distance between a pair of C-alpha atoms that defines a contact.","Maximum distance cutoff", "10.0")
             try:
                 if dlg2.ShowModal() == wx.ID_OK:
                     distance_cutoff = float(dlg2.GetValue())
@@ -648,7 +648,7 @@ class Load:
                 else:
                     print "*** Warning: No distance cutoff was set. Using default value of 10.0 angstrom."
                     print ">>> Maximum distance between C-alpha atoms that define a contact : %s" % distance_cutoff
-                    distance_cutoff = 12.0
+                    distance_cutoff = 10.0
             finally:
                 dlg2.Destroy()
                 wx.YieldIfNeeded()
@@ -685,9 +685,7 @@ class ContactDensity:
 
     def showcdensmap(self,event):
         global condensmap
-        global protein_sequence
         global glob_ax
-        global condensmap_calculated
         global progressbar
         progressbar.ax.set_visible(True)
         glob_ax.figure.canvas.draw()
@@ -698,13 +696,6 @@ class ContactDensity:
         import numpy as np
         import matplotlib.cm as cm
         import matplotlib.colors as colors
-        try:
-            import Bio.PDB
-            from Bio.PDB.Polypeptide import PPBuilder
-        except Exception, err:
-            print "Please install a required python package: Biopython"
-            sys.stderr.write('>>> IMPORT ERROR: %s\n' % str(err))
-            sys.exit()
 
         def _calc_dist(p1,p2):
             return np.linalg.norm(p1-p2)
@@ -763,34 +754,6 @@ class ContactDensity:
             dummy_img = Image.new('RGBA',(x_img_length,y_img_length),(0,0,0,0))
             glob_ax.imshow(dummy_img)
             glob_ax.figure.canvas.draw()
-        
-        if condensmap_calculated == 0:
-            parser=Bio.PDB.PDBParser(PERMISSIVE=True, QUIET=True)
-            structure=parser.get_structure('Protein', pdbpath)
-            ppb=PPBuilder()
-            
-            for pp in ppb.build_peptides(structure):
-                chain_sequence = pp.get_sequence()
-                protein_sequence = protein_sequence + chain_sequence
-            protein_sequence = list(protein_sequence)
-
-            for n in range(len(protein_sequence)):
-                condensmap[n] = 0
-            
-            print ">>> Calculating Contacts Distribution Map..."
-            row = 0
-            for r1 in structure.get_residues():
-                if (r1.resname in aa):
-                    col = 0
-                    for r2 in structure.get_residues():
-                        if (r2.resname in aa):
-                            if (col != row):
-                                dist = _calc_dist(r1.child_dict['CA'].get_coord(),r2.child_dict['CA'].get_coord())
-                                if dist <= distance_cutoff:
-                                    condensmap[row] = condensmap[row] + 1
-                            col = col + 1
-                    row = row + 1
-            condensmap_calculated = 1
         _plot(condensmap)
 
 class InteractionMap:
@@ -799,20 +762,14 @@ class InteractionMap:
     '''
     
     def showimap(self,event):
-        global heatmap_img
-        global heatmap_calculated
         global progressbar
         global glob_ax
+        global heatmap_img
         progressbar.ax.set_visible(True)
         glob_ax.figure.canvas.draw()
 
         import numpy as np
-        try:
-            import Bio.PDB
-        except Exception, err:
-            print "Please install a required python package: Biopython"
-            sys.stderr.write('>>> IMPORT ERROR: %s\n' % str(err))
-            sys.exit()
+        import re
         
         aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
 
@@ -848,38 +805,7 @@ class InteractionMap:
             dummy_img = Image.new('RGBA',(x_img_length,y_img_length),(0,0,0,0))
             glob_ax.imshow(dummy_img)
             glob_ax.figure.canvas.draw()
-            
-        if heatmap_calculated == 0:
-            parser=Bio.PDB.PDBParser(PERMISSIVE=True, QUIET=True)
-            structure=parser.get_structure('Protein', pdbpath)
-            heatmap = {}
-            #Initializing
-            for i in aa:
-                hm = {}
-                for j in aa:
-                    hm[j] = 0.0
-                heatmap[i] = hm
-            print ">>> Calculating Pairwise Heat Map..."
-            heatmap_img = np.zeros(len(aa)*len(aa))
-            row = 0
-            for r1 in structure.get_residues():
-                if r1.resname in aa:
-                    col = 0
-                    for r2 in structure.get_residues():
-                        if r2.resname in aa:
-                            if (col > row):
-                                dist = _calc_dist(r1.child_dict['CA'].get_coord(),r2.child_dict['CA'].get_coord())
-                                if dist <= distance_cutoff:
-                                    heatmap[r1.resname][r2.resname] = heatmap[r1.resname][r2.resname] + 1
-                                    pix = aa.index(r1.resname)*len(aa) + aa.index(r2.resname)
-                                    heatmap_img[pix] = heatmap[r1.resname][r2.resname]
-                            col = col + 1
-                    row = row + 1
-            #heatmap_img = heatmap_img/max(heatmap_img)
-            heatmap_img = heatmap_img.reshape((len(aa), len(aa)))
-            heatmap_calculated = 1
-
-        _plot(heatmap_img,aa)
+        _plot(heatmap_img, aa)
                 
 class MouseMonitor:
     '''
@@ -1189,61 +1115,92 @@ class PDBfunctions:
     def generate_contact_map(self,pdb):
         global distance_cutoff
         import numpy as np
-        try:
-            import Bio.PDB
-        except Exception, err:
-            print "Please install a required python package: Biopython"
-            sys.stderr.write('>>> IMPORT ERROR: %s\n' % str(err))
-            sys.exit()
-        
-        def _calc_dist(p1,p2):
-            return np.linalg.norm(p1-p2)
+        import re
+        import math
 
-        parser=Bio.PDB.PDBParser(PERMISSIVE=True, QUIET=True)
-        structure=parser.get_structure('Protein', pdb)
-        count = 0
-        for atom in structure.get_atoms():
-            if 'CA' in atom.name:
-                count = count + 1
-        matrix = np.zeros((count+1, count+1), np.float)
+        global heatmap_img
+        global condensmap
+
+        def _calc_dist(x,y):   
+            #return numpy.sqrt(numpy.sum((x-y)**2))
+            return np.linalg.norm(x-y)
         aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
+        pdbhandle = open(pdb, 'r')
+        pdbarray = []
+
+        count = 0
+        for line in pdbhandle:
+            line = line.rstrip()
+            pdbarray.append(line)
+            line_list = list(line)
+            if re.match(r'ATOM', ''.join(line_list[0:6]).strip()) and re.match(r'CA', ''.join(line_list[12:16]).strip()):
+                count = count + 1
+        pdbhandle.close()
+
+        #Heatmap Initialize
+        heatmap = {}
+        heatmap_img = {}
+        for i in aa:
+            hm = {}
+            for j in aa:
+                hm[j] = 0.0
+            heatmap[i] = hm
+        heatmap_img = np.zeros(len(aa)*len(aa))
+
+        #Initialize Condensmap
+        condensmap = {}
+        for n in range(count):
+            condensmap[n] = 0
+        
+        #Initialize Distance Matrix
+        matrix = []
+        matrix = np.zeros((count, count), np.float)
+        
         row = 0
-        for r1 in structure.get_residues():
-            if r1.resname in aa:
+        for line1 in pdbarray:
+            line_list1 = list(line1.rstrip())
+            if re.match(r'ATOM', ''.join(line_list1[0:6]).strip()) and ''.join(line_list1[17:20]).strip() in aa and re.match(r'CA', ''.join(line_list1[12:16]).strip()):
                 col = 0
-                for r2 in structure.get_residues():
-                    if r2.resname in aa:
-                        dist = _calc_dist(r1.child_dict['CA'].get_coord(),r2.child_dict['CA'].get_coord())
+                for line2 in pdbarray:
+                    line_list2 = list(line2.rstrip())
+                    if re.match(r'ATOM', ''.join(line_list2[0:6]).strip()) and ''.join(line_list2[17:20]).strip() in aa and re.match(r'CA', ''.join(line_list2[12:16]).strip()):
+                        dist = _calc_dist(np.array([float(''.join(line_list1[30:38]).strip()), float(''.join(line_list1[38:46]).strip()), float(''.join(line_list1[46:54]).strip())]), np.array([float(''.join(line_list2[30:38]).strip()), float(''.join(line_list2[38:46]).strip()), float(''.join(line_list2[46:54]).strip())]))
                         if (dist <= distance_cutoff):
-                            #matrix[row, col] = dist
-                            if dist == 0:
-                                dist = distance_cutoff
-                            matrix[row, col] = 1/dist
+                            matrix[row, col] = dist
+                            condensmap[row] = condensmap[row] + 1
+                            if (col > row):
+                                heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()] = heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()] + 1
+                                pix = aa.index(''.join(line_list1[17:20]).strip())*len(aa) + aa.index(''.join(line_list2[17:20]))
+                                heatmap_img[pix] = heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()]
                         col = col + 1
                     else:
                         continue
                 row = row + 1
             else:
                 continue
+        heatmap_img = heatmap_img.reshape((len(aa), len(aa)))
         return matrix
     
     def map_residues(self,pdb):
+        import re
         global residue_index_map
         global chain_index_map
         pFile = open( pdb, "r" )
         index = 1
         for line in pFile:
-            line = line.rstrip()
-            resid = line[22:26].strip()
-            chainid = line[21:22].strip()
-            if (line[12:16].strip() == 'CA'):
+            line_list = list(line.rstrip())
+            if re.match(r'ATOM', ''.join(line_list[0:6]).strip()) and re.match(r'CA', ''.join(line_list[12:16]).strip()):
+                resid = int(''.join(line_list[22:26]).strip())
+                chainid = ''.join(line_list[21:22]).strip()
                 chain_index_map[index] = chainid
                 residue_index_map[index] = resid
                 index = index  + 1
+        pFile.close()
 
 ### Main function that initiates the calculation.
 def _contact_map_visualizer():
     global dist_matrix
+    global distance_cutoff
     import time
     import PIL.Image as Image
     import numpy as np
@@ -1254,7 +1211,7 @@ def _contact_map_visualizer():
 
     mouse = MouseMonitor()
     pdb = PDBfunctions()
-    print ">>> Generating Contact Map..."
+    print ">>> Generating Contact Map... (this will take a while)"
 
     global pdbpath
     dist_matrix = pdb.generate_contact_map(pdbpath)
@@ -1267,8 +1224,8 @@ def _contact_map_visualizer():
         os.remove(f)
     temp_file = "_temp_img_%.7f.png" % time.time()
     image_file = os.path.join(os.environ['HOME'],'.CMapperDir',temp_file)
-    #rescaled_matrix = (dist_matrix/((dist_matrix.max() - dist_matrix.min())/255.0)).astype(np.uint8)
-    rescaled_matrix = ((dist_matrix - dist_matrix.min())*(255.0/dist_matrix.max())).astype(np.uint8)
+    rescaled_matrix = (dist_matrix/(distance_cutoff/255.0)).astype(np.uint8)
+    #rescaled_matrix = ((dist_matrix - dist_matrix.min())*(255.0/dist_matrix.max())).astype(np.uint8)
     im = Image.fromarray(rescaled_matrix)
     im.save(image_file)
     mouse.set_data(image_file)
