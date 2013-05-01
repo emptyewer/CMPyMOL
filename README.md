@@ -14,9 +14,9 @@ Prerequisites
 =============
 1. Python 2.7
 2. Python framework dependency
-	a. matplotlib
-	b. python imaging library (PIL)
-	c. numpy
+ a) matplotlib
+ b) python imaging library (PIL)
+ c) numpy
 3. PyMOL executable. It is recommended that the user make sure the directory of installed executable is listed in the $PATH variable.
 4. Stride executable. This can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and easily compiled into an executable. It is recommemded that the executable or its directory is listed in the system variable $PATH. NOTE: If this executable is not installed properly, the secondary structure calculation will be automatically disabled.
 
