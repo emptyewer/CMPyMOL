@@ -6,6 +6,10 @@ Author
 ======
 Venkatramanan Krishnamani (venks@andrew.cmu.edu)
 
+Website
+======
+http://emptyewer.github.io/CMPyMOL/
+
 Prerequisites
 =============
 1. Python 2.7
@@ -35,7 +39,7 @@ Usage
 =====
 "python CMPyMOL.py"
 
-The above command will automatically invoke the PyMOL executable and the user is led through the rest of the program with a series of pop-up windows.
+This command will automatically invoke the PyMOL executable and the user is led through the rest of the program with a series of pop-up windows.
 
 Software
 ========
@@ -56,5 +60,5 @@ Plots
 
 Requests and Disclaimer
 =======================
-Users are welcome to send me an email (above) to request the addition of a particular feature. I am actively developing this software.
+Users are welcome to send me an email to request the addition of a particular feature. I am actively developing this software.
 
