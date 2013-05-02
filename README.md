@@ -62,3 +62,4 @@ Requests and Disclaimer
 =======================
 Users are welcome to send me an email to request the addition of a particular feature. I am actively developing this software.
 
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/496c5edce682fd47dca759c644857cea "githalytics.com")](http://githalytics.com/emptyewer/CMPyMOL)
