@@ -47,7 +47,9 @@ There is no need for installation of the script. Optionally, a standalone execut
 
 Usage
 =====
-"python CMPyMOL.py"
+```Shell
+python CMPyMOL.py
+```
 
 This command will automatically invoke the PyMOL executable and the user is led through the rest of the program with a series of pop-up windows.
 
