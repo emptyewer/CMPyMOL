@@ -13,15 +13,20 @@ http://emptyewer.github.io/CMPyMOL/
 Prerequisites
 =============
 1. Python 2.7
-2. Python library dependencies
+2. Python library dependencies (using pip or easy_install)
  
  a) matplotlib
  ```Shell
  pip install matplotlib
  ```
  b) python imaging library (PIL)
- 
+  ```Shell
+ pip install pil
+ ```
  c) numpy (numeric python)
+  ```Shell
+ pip install numpy
+ ```
 3. PyMOL. (It is recommended that the user make sure the directory of installed executable is listed in the $PATH variable.)
 4. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and easily compiled into an executable. It is recommemded that the executable or its directory is listed in the system variable $PATH. NOTE: If this executable is not installed properly, the secondary structure calculation will be disabled in CMPyMOL.
 
