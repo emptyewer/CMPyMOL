@@ -147,7 +147,7 @@ class InitialChecks:
         return (status, command)
 
 
-    if (sys.platform == 'darwin' or sys.platform == "linux"):
+    if (sys.platform.startswith('darwin') or sys.platform.startswith("linux")):
         import subprocess
         import os
         import wx
