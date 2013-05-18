@@ -19,6 +19,7 @@ Version History
 2. Support for displaying variance maps of trajectories.
 3. CMPyMOL now stores calculated contact maps, heat maps and contact density information in a Sqlite database for easy and fast subsequent access.
 4. Cleaned up GUI.
+5. Parallel code for contact map calculation for trajectories.
 
 
 Prerequisites
