@@ -10,10 +10,21 @@ Website
 ======
 http://emptyewer.github.io/CMPyMOL/
 
+Version History
+===============
+
+1.1
+---
+1. Added support for reading PDB trajectories
+2. Support for displaying variance maps of trajectories.
+3. CMPyMOL now stores calculated contact maps, heat maps and contact density information in a Sqlite database for easy and fast subsequent access.
+4. Cleaned up GUI.
+
+
 Prerequisites
 =============
 1. Python 2.7
-2. Python library dependencies (using pip or easy_install)
+2. Python external library dependencies (install using pip or easy_install)
  
  a) matplotlib
  ```Shell
@@ -57,6 +68,26 @@ Software
 ========
 Clicking (left) and draging a selection of points on the displayed contact map will highlight the corresponding residues involved in that contact in the PyMOL window (as red and blue colored spheres). In addition, several structural/biochemical properties can be overlayed on top of the contact map (listed below). The contact-map data can also be plotted in other representations.
 
+Input
+------
+1. Single-frame PDB files (local)
+2. Multi-frame PDB trajectory files (local)
+
+Multi-frame trajectory files should have the following format. The PDB can include REMARKS, CRYST and other standard information lines about the PDB, but MODEL line is essential for the software to work properly (ENDMDL is optional).
+
+```Shell
+MODEL X
+.
+.
+.
+ATOM ...
+ATOM ...
+.
+.
+.
+ENDMDL
+```
+
 Overlays
 --------
 1. Secondary structure of the protein as translucent strips over the contact map. This button won't be active if secondary structure calculation program stride is not installed. (Button: Secondary Structure)
@@ -69,9 +100,16 @@ Plots
 -----
 1. Pairwise Heat Map - Plots a 20x20 matrix of count of pairwise aminoacid interactions.
 2. Contacts Histogram - Plots the number of contacts formed by a given residue as a bar graph. Selecting a particular bar highlights the corresponding residue in the PyMOL window.
+3. Variance Contact Map - For Multi-frame PDB files (trajectory), this button toggles the displays the variance of the contact map starting from the initial frame until the current frame. This is extremely useful in identifying the dynamic regions of a protein.
+
+Word of Caution
+===============
+When using multi-frame PDB, the contact-map for the next frame(s) are being pre-calculated in the background (depending on the number of free CPU cores available). Clicking on "Next Frame" in rapid succession may lead to undesired results and/or a crash.
+
+If the user wishes to start-over in the event of a crash, typically deleting the database that is created in the working directory and relaunching the program should do it.
 
 Requests and Disclaimer
 =======================
-Users are welcome to send me an email to request the addition of a particular feature. I am actively developing this software.
+Users are welcome to send me an email to request the addition of a particular feature.
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/496c5edce682fd47dca759c644857cea "githalytics.com")](http://githalytics.com/emptyewer/CMPyMOL)

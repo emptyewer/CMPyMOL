@@ -1228,4 +1228,3 @@ def _contact_map_visualizer():
 ### Main environment
 if __name__ == "__main__":  
     _contact_map_visualizer()
-

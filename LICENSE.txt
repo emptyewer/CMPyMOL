@@ -4,7 +4,7 @@ License
 #  The MIT License (MIT)
 # =======================
 # 
-# The PyMOL Plugin source code in this file is copyrighted, but you are
+# CMPyMOL source code in this file is copyrighted, but you are
 # free to use and copy it as long as you don't change or remove any of
 # the copyright notices.
 # 
