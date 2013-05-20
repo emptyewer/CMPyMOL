@@ -958,10 +958,14 @@ class ContactDensity:
                 connectedSocket.do("as cartoon")
                 connectedSocket.do("color white")
                 connectedSocket.do('select Selection, resi %s and chain %s' % (residue_index_map[int(event.xdata)], chain_index_map[int(event.xdata)]))
-                connectedSocket.do('disable Selection')
+                connectedSocket.do('select Surround, byres((residue %s around %f) and chain %s and name %s)' % (residue_index_map[int(event.xdata)], distance_cutoff, chain_index_map[int(event.xdata)], cmap_atom))
+                connectedSocket.do('show sticks, Surround')
+                connectedSocket.do('util.cbag Surround')
+                connectedSocket.do('color magenta, Selection')
                 connectedSocket.do('show spheres, Selection')
-                connectedSocket.do('color tv_green, Selection')
                 connectedSocket.do('center Selection, animate=1')
+                connectedSocket.do('disable Selection')
+                connectedSocket.do('disable Surround')
         def _on_close(event):
             global contact_density_closed
             contact_density_closed = True
