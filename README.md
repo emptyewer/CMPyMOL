@@ -109,8 +109,8 @@ When using a multi-frame PDB file, the contact-map for the next frame(s) are bei
 
 In the event of a crash, delete the database that is created in the working directory and relaunch the program.
 
-Requests and Disclaimer
-=======================
+Requests
+========
 Users are welcome to send me an email to request the addition of a specific feature or to report a bug.
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/496c5edce682fd47dca759c644857cea "githalytics.com")](http://githalytics.com/emptyewer/CMPyMOL)
