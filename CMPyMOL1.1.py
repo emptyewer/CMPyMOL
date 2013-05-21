@@ -135,6 +135,7 @@ x_img_length = 0
 y_img_length = 0
 glob_image = None
 glob_ax = None
+glob_text = None
 progressbar = None
 glob_con_ax = None
 glob_heat_ax = None
@@ -1137,6 +1138,8 @@ class GUISetup:
         self.prev = None
         self.variance = None
         self.about = None
+        self.region1 = None
+        self.region2 = None
 
     def _on_close(self, event):
         subprocess.call(["kill", "-9", "%d" % pymol_pid])
@@ -1212,11 +1215,16 @@ class GUISetup:
             connectedSocket.do("color white")
 
             if len(first_selection) == 0 or len(first_selection) == 0:
+                self.region1.set_text('I:%d-%d chain %s' % (residue_index_map[xa1], residue_index_map[xa2], chain_index_map[xa1]) )
+                self.region2.set_text('II:%d-%d chain %s' % (residue_index_map[xb1], residue_index_map[xb2], chain_index_map[xb1]) )
                 send_commands(xa1, xa2, xb1, xb2)
                 self.selection_count = self.selection_count + 1
             else:
+                self.region1.set_text('I:%d-%d chain %s' % (residue_index_map[min(first_selection)], residue_index_map[max(first_selection)], chain_index_map[min(first_selection)]) )
+                self.region2.set_text('II:%d-%d chain %s' % (residue_index_map[min(second_selection)], residue_index_map[max(second_selection)], chain_index_map[min(second_selection)]) )
                 send_commands(min(first_selection), max(first_selection), min(second_selection), max(second_selection))
                 self.selection_count = self.selection_count + 1
+            self.ax.figure.canvas.draw()
             self.ax.figure.canvas.mpl_disconnect(self.trackingid)
     
     def draw_image(self):
@@ -1326,8 +1334,10 @@ class GUISetup:
         self.ax = plt.gca()
         glob_ax = self.ax
         global frametext, visualtext
-        frametext = self.ax.annotate('Frame #1/%s' % str(len(model_indexes) + 1), xy=(2.0, 1),  xycoords='data', xytext=(-112, 225), textcoords='offset points', bbox=dict(boxstyle="round", fc="0.8"))
-        visualtext = self.ax.annotate('Contact Map', xy=(2.0, 1),  xycoords='data', xytext=(-112, 200), textcoords='offset points', bbox=dict(boxstyle="round", fc="0.8"))
+        frametext = self.ax.annotate('Frame #1/%s' % str(len(model_indexes) + 1), xy=(2.0, 1),  xycoords='data', xytext=(-112, 200), textcoords='offset points', bbox=dict(boxstyle="round", fc="0.8"))
+        visualtext = self.ax.annotate('Contact Map', xy=(2.0, 1),  xycoords='data', xytext=(-112, 225), textcoords='offset points', bbox=dict(boxstyle="round", fc="0.8"))
+        self.region1 = self.ax.annotate('Region I', xy=(2.0, 1),  xycoords='data', xytext=(-112, 175), textcoords='offset points', bbox=dict(boxstyle="round", fc="0.8"))
+        self.region2 = self.ax.annotate('Region II', xy=(2.0, 1),  xycoords='data', xytext=(-112, 150), textcoords='offset points', bbox=dict(boxstyle="round", fc="0.8"))
         self.ax.fmt_xdata = self.ax.fmt_ydata = lambda coord: '{:d}'.format(coord)
         self.ax.set_autoscaley_on(False)
         self.ax.set_autoscalex_on(False)
@@ -1339,6 +1349,12 @@ class GUISetup:
         yticks = self.ax.yaxis.get_major_ticks()
         for y in yticks:
             y.label1.set_visible(False)
+        # labels for xaxis
+        locs, labels = plt.xticks()
+        t = []
+        for i in range(len(locs)):
+            t.append(str(int(locs[i] + 1)))
+        plt.xticks(locs[1:(len(locs)-1)], t[1:(len(t)-1)])
         _add_buttons(self)
         # Rectangle for selection added to the top corner of the plot window
         self.rect = Rectangle((0,0), width=0, height=0, alpha=0.6, fc=(0,0,0,0), ec='magenta', aa=True, lw=2)
