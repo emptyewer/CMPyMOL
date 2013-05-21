@@ -429,7 +429,7 @@ class PDBfunctions:
     '''
     Calculates Contact Map and other PDB file operations.
     '''
-    def unique(seq, idfun=None): 
+    def unique(self, seq, idfun=None): 
        # order preserving
        if idfun is None:
            def idfun(x): return x
@@ -440,7 +440,7 @@ class PDBfunctions:
            if marker in seen: continue
            seen[marker] = 1
            result.append(item)
-       return sort(result)
+       return sorted(result)
     
     def map_residues(self, pdb):
         import re
@@ -466,8 +466,8 @@ class PDBfunctions:
         import time
 
         global pdbresiduecount
-        aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
-        
+        # aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
+        aa = ['GLU','ASP','LYS','ARG','HIS','GLN','PRO','ASN','ALA','THR','SER','VAL','GLY','MET','CYS','ILE','LEU','TYR','PHE','TRP']
         def _calc_dist(x,y):   
             return np.linalg.norm(x-y)
 
@@ -499,13 +499,11 @@ class PDBfunctions:
 
         #Heatmap Initialize
         heatmap = {}
-        heatmap_img = {}
+        heatmap_img = []
         for i in aa:
-            hm = {}
             for j in aa:
-                hm[j] = 0.0
-            heatmap[i] = hm
-        heatmap_img = np.zeros(len(aa)*len(aa))
+                string = i+'-'+j
+                heatmap[string] = []
 
         #Initialize Condensmap
         condensmap = {}
@@ -519,7 +517,7 @@ class PDBfunctions:
         row = 0
         for line1 in pdbarray:
             line_list1 = list(line1.rstrip())
-            col = row
+            col = row + 1
             for line2 in pdbarray[col:]:
                 line_list2 = list(line2.rstrip())
                 dist = _calc_dist(np.array([float(''.join(line_list1[30:38]).strip()), float(''.join(line_list1[38:46]).strip()), float(''.join(line_list1[46:54]).strip())]), np.array([float(''.join(line_list2[30:38]).strip()), float(''.join(line_list2[38:46]).strip()), float(''.join(line_list2[46:54]).strip())]))
@@ -528,13 +526,23 @@ class PDBfunctions:
                         dist = float(distance_cutoff)
                     matrix[row, col] = 1/dist
                     matrix[col, row] = 1/dist
-                    if (col > row):
-                        condensmap[row] = condensmap[row] + 1
-                        heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()] = heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()] + 1
-                        pix = aa.index(''.join(line_list1[17:20]).strip())*len(aa) + aa.index(''.join(line_list2[17:20]))
-                        heatmap_img[pix] = heatmap[''.join(line_list1[17:20]).strip()][''.join(line_list2[17:20]).strip()]
+                    condensmap[row] = condensmap[row] + 1
+                    key1 = ''.join(line_list1[17:20]).strip() + '-' + ''.join(line_list2[17:20]).strip()
+                    key2 = ''.join(line_list2[17:20]).strip() + '-' + ''.join(line_list1[17:20]).strip()
+                    heatmap[key1].append(int(''.join(line_list2[22:26]).strip()))
+                    heatmap[key2].append(int(''.join(line_list2[22:26]).strip()))
                 col = col + 1
             row = row + 1
+        # Get unique interactions
+        for key in heatmap.keys():
+            sequence = heatmap[key]
+            if (len(sequence) != 0):
+                heatmap[key] = self.unique(sequence)
+        for i in aa:
+            for j in aa:
+                key = i + '-' + j
+                heatmap_img.append(len(heatmap[key]))
+        heatmap_img = np.asarray(heatmap_img)
         heatmap_img = heatmap_img.reshape((len(aa), len(aa)))
         rescaled_matrix = np.multiply(matrix, 255/(distance_cutoff - 1/distance_cutoff)).astype(np.uint8)
         
@@ -946,8 +954,8 @@ class ContactDensity:
 
     def showcdensmap(self,event):
         
-        aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
-
+        # aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
+        aa = ['GLU','ASP','LYS','ARG','HIS','GLN','PRO','ASN','ALA','THR','SER','VAL','GLY','MET','CYS','ILE','LEU','TYR','PHE','TRP']
         import numpy as np
         import matplotlib.cm as cm
         import matplotlib.colors as colors
@@ -1028,8 +1036,8 @@ class InteractionMap:
         import numpy as np
         import re
         
-        aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
-
+        # aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
+        aa = ['GLU','ASP','LYS','ARG','HIS','GLN','PRO','ASN','ALA','THR','SER','VAL','GLY','MET','CYS','ILE','LEU','TYR','PHE','TRP']
         def _calc_dist(p1,p2):
             return np.linalg.norm(p1-p2)
         
