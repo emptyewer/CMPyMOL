@@ -469,7 +469,9 @@ class PDBfunctions:
         # aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
         aa = ['GLU','ASP','LYS','ARG','HIS','GLN','PRO','ASN','ALA','THR','SER','VAL','GLY','MET','CYS','ILE','LEU','TYR','PHE','TRP']
         def _calc_dist(x,y):   
-            return np.linalg.norm(x-y)
+            return math.sqrt((y[0] - x[0]) ** 2 +
+                     (y[1] - x[1]) ** 2 +
+                     (y[2] - x[2]) ** 2)
 
         outpath = ''
         pdbarray = []
@@ -520,7 +522,7 @@ class PDBfunctions:
             col = row + 1
             for line2 in pdbarray[col:]:
                 line_list2 = list(line2.rstrip())
-                dist = _calc_dist(np.array([float(''.join(line_list1[30:38]).strip()), float(''.join(line_list1[38:46]).strip()), float(''.join(line_list1[46:54]).strip())]), np.array([float(''.join(line_list2[30:38]).strip()), float(''.join(line_list2[38:46]).strip()), float(''.join(line_list2[46:54]).strip())]))
+                dist = _calc_dist([float(''.join(line_list1[30:38]).strip()), float(''.join(line_list1[38:46]).strip()), float(''.join(line_list1[46:54]).strip())], [float(''.join(line_list2[30:38]).strip()), float(''.join(line_list2[38:46]).strip()), float(''.join(line_list2[46:54]).strip())])
                 if (dist <= distance_cutoff):
                     if dist == 0:
                         dist = float(distance_cutoff)
@@ -959,8 +961,6 @@ class ContactDensity:
         import numpy as np
         import matplotlib.cm as cm
         import matplotlib.colors as colors
-        def _calc_dist(p1,p2):
-            return np.linalg.norm(p1-p2)
 
         def _onpick(event):
             if event.inaxes == glob_con_ax:
@@ -1038,8 +1038,6 @@ class InteractionMap:
         
         # aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
         aa = ['GLU','ASP','LYS','ARG','HIS','GLN','PRO','ASN','ALA','THR','SER','VAL','GLY','MET','CYS','ILE','LEU','TYR','PHE','TRP']
-        def _calc_dist(p1,p2):
-            return np.linalg.norm(p1-p2)
         
         def _on_close(event):
             global heat_map_closed
