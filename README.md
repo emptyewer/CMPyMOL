@@ -4,7 +4,7 @@ CMPyMOL is an add-on software to molecular visualization program PyMOL. It combi
 
 Author
 ======
-Venkatramanan Krishnamani (venks@andrew.cmu.edu)
+Venkatramanan Krishnamani (venky.krishna@me.com)
 
 Website
 ======
