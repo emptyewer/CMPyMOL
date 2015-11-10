@@ -13,7 +13,7 @@ http://emptyewer.github.io/CMPyMOL/
 Version History
 ===============
 
-1.1
+1.5
 ---
 1. Added support for reading multi-model PDB files. (Multi-Model PDB file for NMR structure or Trajectory from MD simulations.)
 2. Supports displaying variance of contact points from a series of contact maps generated from multi-model PDB files.
@@ -22,44 +22,69 @@ Version History
 5. Parallelized the code for contact map calculation for multi-frame PDB files.
 
 
-Prerequisites
-=============
+Install Instructions for Linux
+==============================
+
+The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude) or ```pip``` or a similar package management system.
+
 1. Python 2.7
 2. Python external library dependencies (install using pip or easy_install)
 
  a) wxpython
  ```Shell
- pip install wxpython
- ``` 
- a) matplotlib
+ apt-get install python-wxgtk2.8
+ ```
+ b) matplotlib
  ```Shell
  pip install matplotlib
  ```
- b) python imaging library (PIL)
+ c) python imaging library (PIL)
   ```Shell
  pip install pil
  ```
- c) numpy (numeric python)
+ d) numpy (numeric python)
   ```Shell
  pip install numpy
  ```
 3. PyMOL. (It is required that the user add the PyMOL installation directory to the $PATH environment variable.)
 4. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and compiled into a stand-alone executable. It is recommended that the Stride executable or its installation directory is added to the $PATH environment variable. NOTE: If this executable is not detected in the $PATH variable, the secondary structure calculation will be disabled in CMPyMOL.
 
-Mac OS X
---------
-Users can install the python libraries using ```easy_install``` or ```pip```. It is recommended that the user use Enthought Canopy python distribution and management package downloaded from https://www.enthought.com/products/canopy/. This package includes a robust python library management software and a python IDE.
+Install Instructions for Mac OS X
+=================================
 
-PyMOL 1.5.x can be installed using MacPorts http://www.macports.org. NOTE: This automatically adds the executable into the $PATH environment variable.
+Users can install the python libraries using ```easy_install``` or ```pip``` or ```homebrew```. It is recommended that the user use Enthought Canopy python distribution and management package downloaded from https://www.enthought.com/products/canopy/. This package includes a robust python library management software and a python IDE.
 
-Linux
------
-The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude) or ```pip``` or a similar package management system.
+1. (Optional Step) Python 2.7 (provided by default). However, a custom version can be installed using
+
+```Shell
+brew install python
+```
+2. Python external library dependencies (install using ```pip``` or ```easy_install``` or ```brew```)
+
+ a) wxpython
+ ```Shell
+ brew install wxmac
+ ```
+ ```Shell
+ brew install wxpython
+ ```
+ b) matplotlib
+ ```Shell
+ pip install matplotlib
+ ```
+ c) python imaging library (PIL)
+  ```Shell
+ pip install pil
+ ```
+ d) numpy (numeric python)
+  ```Shell
+ pip install numpy
+ ```
+3. PyMOL. (It is required that the user add the PyMOL installation directory to the $PATH environment variable.)
+4. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and compiled into a stand-alone executable. It is recommended that the Stride executable or its installation directory is added to the $PATH environment variable. NOTE: If this executable is not detected in the $PATH variable, the secondary structure calculation will be disabled in CMPyMOL.
 
 
-Installation
-============
-There is no need for installation of the script. Optionally, a standalone executable can be complied using ```pyinstaller``` or ```py2exe``` or ```py2app``` package, depending on the users operating system.
+
 
 Usage
 =====
