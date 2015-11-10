@@ -54,7 +54,7 @@ PyMOL 1.5.x can be installed using MacPorts http://www.macports.org. NOTE: This 
 
 Linux
 -----
-The python dependencies and PyMOL can be installed using apt-get (aptitude) or a similar package management system.
+The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude) or ```pip``` or a similar package management system.
 
 
 Installation
