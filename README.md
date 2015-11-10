@@ -26,6 +26,7 @@ Prerequisites
 =============
 1. Python 2.7
 2. Python external library dependencies (install using pip or easy_install)
+
  a) wxpython
  ```Shell
  pip install wxpython
