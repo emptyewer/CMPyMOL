@@ -27,7 +27,7 @@ Install Instructions for Linux
 
 The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude) or ```pip``` or a similar package management system.
 
-1. Python 2.7
+1. Python 2.7 (provided by default in the distribution)
 2. Python external library dependencies (install using pip or easy_install)
 
  a) wxpython
@@ -117,6 +117,11 @@ ATOM ...
 ENDMDL
 ```
 NOTE: The PDB can include REMARKS, CRYST and other standard PDB information entries. The MODEL line is essential for the software to work properly (ENDMDL is optional).
+
+Overall Interface
+-----------------
+![alt tag](https://raw.githubusercontent.com/emptyewer/Fytt/master/screenshot.png)
+
 
 Overlays
 --------
