@@ -43,12 +43,12 @@ Prerequisites
   ```Shell
  pip install numpy
  ```
-3. PyMOL. (It is recommended that the user add the PyMOL installation directory to the $PATH environment variable.)
+3. PyMOL. (It is required that the user add the PyMOL installation directory to the $PATH environment variable.)
 4. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and compiled into a stand-alone executable. It is recommended that the Stride executable or its installation directory is added to the $PATH environment variable. NOTE: If this executable is not detected in the $PATH variable, the secondary structure calculation will be disabled in CMPyMOL.
 
 Mac OS X
 --------
-Users can install the python libraries using "easy_install" or "pip". It is recommended that the user use Enthought Canopy python distribution and management package downloaded from https://www.enthought.com/products/canopy/. This package includes a robust python library management software and a python IDE.
+Users can install the python libraries using ```easy_install``` or ```pip```. It is recommended that the user use Enthought Canopy python distribution and management package downloaded from https://www.enthought.com/products/canopy/. This package includes a robust python library management software and a python IDE.
 
 PyMOL 1.5.x can be installed using MacPorts http://www.macports.org. NOTE: This automatically adds the executable into the $PATH environment variable.
 
@@ -59,7 +59,7 @@ The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude
 
 Installation
 ============
-There is no need for installation of the script. Optionally, a standalone executable can be complied using "pyinstaller" or "py2exe" or "py2app" package, depending on the users operating system.
+There is no need for installation of the script. Optionally, a standalone executable can be complied using ```pyinstaller``` or ```py2exe``` or ```py2app``` package, depending on the users operating system.
 
 Usage
 =====
@@ -117,4 +117,3 @@ Requests
 ========
 Users are welcome to send me an email to request the addition of a specific feature or to report a bug.
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/496c5edce682fd47dca759c644857cea "githalytics.com")](http://githalytics.com/emptyewer/CMPyMOL)
