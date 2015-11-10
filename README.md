@@ -120,21 +120,33 @@ NOTE: The PDB can include REMARKS, CRYST and other standard PDB information entr
 
 Overall Interface
 -----------------
-![alt tag](https://raw.githubusercontent.com/emptyewer/Fytt/master/screenshot.png)
-
+![alt tag](https://raw.githubusercontent.com/emptyewer/CMPyMOL/master/images/cmpymol.png)
 
 Overlays
 --------
+
+![alt tag](https://raw.githubusercontent.com/emptyewer/CMPyMOL/master/images/main.png)
+
 1. Secondary structure of the protein is overlaid as translucent strips over the contact map. This button won't be active if secondary structure calculation program stride is not found in the system path ($PATH). (Button: Secondary Structure)
+
 2. Contact points where a Charge-Charge interaction occurs are highlighted. (Button: Charged Interactions)
+
 3. Residues that interact via hydrophobic interaction are highlighted. (Button: Hydrophobic Interactions)
+
 4. Contact regions that have a B-factor that is higher than a certain cutoff are highlighted (Button: B-factor). The b-factor cutoff can be varied using a slider (Slider).
+
 5. Highlights a contact point/region where the pair of selected residues are in contact (selected by checking the checkboxes). If only one aminoacid is selected from the list, interaction site of the selected aminoacid with another one of the same type is highlighted. (List of checkboxes for each aminoacid)
 
 Plots
 -----
 1. Pairwise Heat Map - Plots a 20x20 matrix of pairwise aminoacid interaction count.
+
+![alt tag](https://raw.githubusercontent.com/emptyewer/CMPyMOL/master/images/pairwise.png)
+
 2. Contacts Histogram - Plots the number of contacts around a given residue. Selecting a particular bar highlights the corresponding residue in the PyMOL window.
+
+![alt tag](https://raw.githubusercontent.com/emptyewer/CMPyMOL/master/images/contact-density.png)
+
 3. Variance Contact Map - For Multi-frame PDB files (trajectory), this button toggles the displays the variance contact map starting from the initial frame until the current frame. This view can be used to identifying the dynamic regions in a protein.
 
 Word of Caution
