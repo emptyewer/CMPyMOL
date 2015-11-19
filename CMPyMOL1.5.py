@@ -520,10 +520,9 @@ class PDBfunctions:
         global pdbresiduecount
         # aa = ['ALA','ARG','ASN','ASP','CYS','GLN','GLU','GLY','HIS','ILE','LEU','LYS','MET','PHE','PRO','SER','THR','TRP','TYR','VAL']
         aa = ['GLU','ASP','LYS','ARG','HIS','GLN','PRO','ASN','ALA','THR','SER','VAL','GLY','MET','CYS','ILE','LEU','TYR','PHE','TRP']
+        
         def _calc_dist(x,y):
-            return math.sqrt((y[0] - x[0]) ** 2 +
-                     (y[1] - x[1]) ** 2 +
-                     (y[2] - x[2]) ** 2)
+            return math.sqrt((y[0] - x[0]) ** 2 + (y[1] - x[1]) ** 2 + (y[2] - x[2]) ** 2)
 
         outpath = ''
         pdbarray = []
@@ -575,7 +574,7 @@ class PDBfunctions:
             for line2 in pdbarray[col:]:
                 line_list2 = list(line2.rstrip())
                 dist = _calc_dist([float(''.join(line_list1[30:38]).strip()), float(''.join(line_list1[38:46]).strip()), float(''.join(line_list1[46:54]).strip())], [float(''.join(line_list2[30:38]).strip()), float(''.join(line_list2[38:46]).strip()), float(''.join(line_list2[46:54]).strip())])
-                if (dist <= distance_cutoff):
+                if (dist < distance_cutoff):
                     if dist == 0:
                         dist = float(distance_cutoff)
                     matrix[row, col] = 1/dist
@@ -599,7 +598,7 @@ class PDBfunctions:
                 heatmap_img.append(len(heatmap[key]))
         heatmap_img = np.asarray(heatmap_img)
         heatmap_img = heatmap_img.reshape((len(aa), len(aa)))
-        rescaled_matrix = np.multiply(matrix, 255/(distance_cutoff - 1/distance_cutoff)).astype(np.uint8)
+        rescaled_matrix = np.multiply(matrix, 255/(distance_cutoff)).astype(np.uint8)
 
         sum_matrix_prev = []
         sum_matrix = []
@@ -1082,7 +1081,7 @@ class ContactDensity:
             plt.ylabel('Contact Counts\n')
             # Set Colors of the bar
             fractions = bar_heights/bar_heights.max()
-            normalized_colors = colors.normalize(fractions.min(), fractions.max())
+            normalized_colors = colors.Normalize(fractions.min(), fractions.max())
             count = 0
             for rect in bar_rectangles:
                 c = cm.jet(normalized_colors(fractions[count]))
@@ -1255,23 +1254,27 @@ class GUISetup:
 
     def on_release(self, event):
         def send_commands(a, b, c, d):
+            global distance_cutoff
+            connectedSocket.do('set sphere_scale, 0.5')
             region1 =  'select Region_I%s, resi %s-%s and chain %s' % (str(self.selection_count), residue_index_map[a], residue_index_map[b], chain_index_map[a])
             region1a = 'select Region_IA, resi %s-%s and chain %s and name %s' % (residue_index_map[a], residue_index_map[b], chain_index_map[a], cmap_atom)
             connectedSocket.do(region1)
             connectedSocket.do(region1a)
             connectedSocket.do('show sticks, Region_I%s' % str(self.selection_count))
-            connectedSocket.do('color tv_red, Region_I%s' % str(self.selection_count))
+            connectedSocket.do('color tv_red, Region_IA')
+            connectedSocket.do('show sphere, Region_IA')
             # connectedSocket.do('center Region_I, animate=1')
             region2 =  'select Region_II%s, resi %s-%s and chain %s' % (str(self.selection_count), residue_index_map[c], residue_index_map[d], chain_index_map[c])
             region2a = 'select Region_IIA, resi %s-%s and chain %s and name %s' % (residue_index_map[c], residue_index_map[d], chain_index_map[c], cmap_atom)
             connectedSocket.do(region2)
             connectedSocket.do(region2a)
             connectedSocket.do('show sticks, Region_II%s' % str(self.selection_count))
-            connectedSocket.do('color tv_blue, Region_II%s' % str(self.selection_count))
+            connectedSocket.do('color tv_blue, Region_IIA')
+            connectedSocket.do('show sphere, Region_IIA')
             # connectedSocket.do('center Region_II, animate=1')
             connectedSocket.do('disable Region_I%s' % str(self.selection_count))
             connectedSocket.do('disable Region_II%s' % str(self.selection_count))
-            distcmd = 'distance DIST_' + str(self.selection_count) +', Region_IA, Region_IIA, cutoff=15'
+            distcmd = 'distance DIST_' + str(self.selection_count) +', Region_IA, Region_IIA, cutoff=%d' % (distance_cutoff)
             connectedSocket.do(distcmd)
             #connectedSocket.do('hide labels')
             connectedSocket.do('zoom DIST_' + str(self.selection_count) + ', animate=1')
@@ -1284,17 +1287,21 @@ class GUISetup:
             self.x1 = event.xdata
             self.y1 = event.ydata
             if (int(self.x0) > int(self.x1)):
-                xa1 = int(self.x1+1)
-                xa2 = int(self.x0+1)
+                xa1 = int(self.x1)
+                xa2 = int(self.x0)
             else:
-                xa1 = int(self.x0+1)
-                xa2 = int(self.x1+1)
+                xa1 = int(self.x0)
+                xa2 = int(self.x1)
             if (int(self.y0) > int(self.y1)):
-                xb1 = int(self.y1+1)
-                xb2 = int(self.y0+1)
+                xb1 = int(self.y1)
+                xb2 = int(self.y0)
             else:
-                xb1 = int(self.y0+1)
-                xb2 = int(self.y1+1)
+                xb1 = int(self.y0)
+                xb2 = int(self.y1)
+            # print xa1
+            # print xa2
+            # print xb1
+            # print xb2
             first_selection = []
             second_selection = []
             for a in range(xa1,xa2+1):
@@ -1434,10 +1441,10 @@ class GUISetup:
             imgarray = np.reshape(imgarray, (308,308))
             img = Image.fromarray(imgarray)
             img = img.transpose(Image.FLIP_TOP_BOTTOM)
-            plt.imshow(img, origin='lower', interpolation='nearest')
+            plt.imshow(img, origin='lower', interpolation='none')
             glob_image = img
         else:
-            plt.imshow(COMAP, origin='lower', interpolation='nearest')
+            plt.imshow(COMAP, origin='lower', interpolation='none')
             glob_image = Image.fromarray(COMAP)
         glob_image = glob_image.convert('RGB')
         x_img_length, y_img_length = glob_image.size
