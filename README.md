@@ -6,9 +6,6 @@ Author
 ======
 Venkatramanan Krishnamani (venky.krishna@me.com)
 
-Website
-======
-http://emptyewer.github.io/CMPyMOL/
 
 Version History
 ===============
