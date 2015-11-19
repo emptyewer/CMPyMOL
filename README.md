@@ -43,9 +43,9 @@ The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude
  ```Shell
  pip install matplotlib
  ```
- c) python imaging library (PIL)
+ c) python imaging library
   ```Shell
- pip install pil
+ pip install pillow
  ```
  d) numpy (numeric python)
   ```Shell
@@ -76,9 +76,9 @@ Users can install the python libraries using ```easy_install``` or ```pip``` or 
  ```Shell
  pip install matplotlib
  ```
- c) python imaging library (PIL)
+ c) python imaging library
   ```Shell
- pip install pil
+ pip install pillow
  ```
  d) numpy (numeric python)
   ```Shell
