@@ -27,6 +27,11 @@ Install Instructions for Linux
 
 The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude) or ```pip``` or a similar package management system.
 
+
+0. PyMOL
+ ```Shell
+ apt-get install pymol
+ ```
 1. Python 2.7 (provided by default in the distribution)
 2. Python external library dependencies (install using pip or easy_install)
 
@@ -46,19 +51,18 @@ The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude
   ```Shell
  pip install numpy
  ```
-3. PyMOL. (It is required that the user add the PyMOL installation directory to the $PATH environment variable.)
-4. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and compiled into a stand-alone executable. It is recommended that the Stride executable or its installation directory is added to the $PATH environment variable. NOTE: If this executable is not detected in the $PATH variable, the secondary structure calculation will be disabled in CMPyMOL.
+3. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and compiled into a stand-alone executable. It is recommended that the Stride executable or its installation directory is added to the $PATH environment variable. NOTE: If this executable is not detected in the $PATH variable, the secondary structure calculation will be disabled in CMPyMOL.
 
 Install Instructions for Mac OS X
 =================================
 
 Users can install the python libraries using ```easy_install``` or ```pip``` or ```homebrew```. It is recommended that the user use Enthought Canopy python distribution and management package downloaded from https://www.enthought.com/products/canopy/. This package includes a robust python library management software and a python IDE.
 
-1. (Optional Step) Python 2.7 (provided by default). However, a custom version can be installed using
-
-```Shell
-brew install python
-```
+0. PyMOL
+ ```Shell
+ brew install homebrew/science/pymol
+ ```
+1. Python 2.7 (provided by default in the distribution)
 2. Python external library dependencies (install using ```pip``` or ```easy_install``` or ```brew```)
 
  a) wxpython
@@ -80,10 +84,7 @@ brew install python
   ```Shell
  pip install numpy
  ```
-3. PyMOL. (It is required that the user add the PyMOL installation directory to the $PATH environment variable.)
-4. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and compiled into a stand-alone executable. It is recommended that the Stride executable or its installation directory is added to the $PATH environment variable. NOTE: If this executable is not detected in the $PATH variable, the secondary structure calculation will be disabled in CMPyMOL.
-
-
+3. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and compiled into a stand-alone executable. It is recommended that the Stride executable or its installation directory is added to the $PATH environment variable. NOTE: If this executable is not detected in the $PATH variable, the secondary structure calculation will be disabled in CMPyMOL.
 
 
 Usage
@@ -140,13 +141,9 @@ Overlays
 Plots
 -----
 1. Pairwise Heat Map - Plots a 20x20 matrix of pairwise aminoacid interaction count.
-
 ![alt tag](https://raw.githubusercontent.com/emptyewer/CMPyMOL/master/images/pairwise.png)
-
 2. Contacts Histogram - Plots the number of contacts around a given residue. Selecting a particular bar highlights the corresponding residue in the PyMOL window.
-
 ![alt tag](https://raw.githubusercontent.com/emptyewer/CMPyMOL/master/images/contact-density.png)
-
 3. Variance Contact Map - For Multi-frame PDB files (trajectory), this button toggles the displays the variance contact map starting from the initial frame until the current frame. This view can be used to identifying the dynamic regions in a protein.
 
 Word of Caution

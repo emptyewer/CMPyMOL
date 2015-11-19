@@ -173,7 +173,7 @@ the copyright notices.
 
 -----------------------------------------------------------------------------------
 CMPyMOL
-Copyright (C) 2014 by Venkatramanan Krishnamani <venks@andrew.cmu.edu>
+Copyright (C) 2015 by Venkatramanan Krishnamani <venks@andrew.cmu.edu>
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation
@@ -196,8 +196,8 @@ OTHER DEALINGS IN THE SOFTWARE."""
             info.SetName('CMPyMOL')
             info.SetVersion('1.5')
             info.SetDescription(description)
-            info.SetCopyright('(C) 2014 Venkatramanan Krishnamani')
-            info.SetWebSite('http://emptyewer.github.io/CMPyMOL')
+            info.SetCopyright('(C) 2015 Venkatramanan Krishnamani')
+            info.SetWebSite('https://github.com/emptyewer/CMPyMOL')
             info.SetLicence(licence)
             info.AddDeveloper('Venkatramanan Krishnamani\nUniversity of Iowa\nIowa City, IA')
             wx.AboutBox(info)
@@ -390,9 +390,12 @@ class Initialize:
         # Create working directory
         if not os.path.exists(os.path.join(os.environ['HOME'],'.CMapperDir')):
             os.makedirs(os.path.join(os.environ['HOME'],'.CMapperDir'))
+        
         #Locate and launch PyMOL
         global pymolpath
+
         pymol_loc = _cmd_exists("pymol")
+
         if pymol_loc[0]:
             global pymol_pid
             pymolpath = pymol_loc[1]
@@ -400,11 +403,12 @@ class Initialize:
             pymol_pid = pyp.pid
             print ">>> Lanching PyMOL from location %s (%d)" % (pymolpath, pymol_pid)
         else:
-            print "*** Error: Cannot locate PyMOL in the system path."
+            print "*** ERROR: Cannot locate PyMOL in the system path."
             if sys.platform.startswith('darwin'):
-                print "*** Please install PyMOL using macports http://www.macports.org. ***"
+                print "*** Please install PyMOL using Homebrew: brew install homebrew/science/pymol  ***"
             elif sys.platform.startswith("linux"):
-                print "*** Please install PyMOL using apt-get install pymol. ***"
+                print "*** Please install PyMOL using: apt-get install pymol. ***"
+        
         #Locate stride
         global stridepath
         stride_loc = _cmd_exists("stride")
