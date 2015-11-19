@@ -29,7 +29,7 @@ The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude
 
 
 0. PyMOL
- ```Shell
+ ```
  apt-get install pymol
  ```
 1. Python 2.7 (provided by default in the distribution)
@@ -59,7 +59,7 @@ Install Instructions for Mac OS X
 Users can install the python libraries using ```easy_install``` or ```pip``` or ```homebrew```. It is recommended that the user use Enthought Canopy python distribution and management package downloaded from https://www.enthought.com/products/canopy/. This package includes a robust python library management software and a python IDE.
 
 0. PyMOL
- ```Shell
+ ```
  brew install homebrew/science/pymol
  ```
 1. Python 2.7 (provided by default in the distribution)
