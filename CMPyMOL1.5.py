@@ -4,7 +4,7 @@
 '''
 CMPyMOL 1.5
 
-http://emptyewer.github.io/CMPyMOL
+https://github.com/emptyewer/CMPyMOL
 
 Author: Venkatramanan Krishnamani (Version 1.5)
 
@@ -19,7 +19,7 @@ Author: Venkatramanan Krishnamani (Version 1.5)
 #
 # -----------------------------------------------------------------------------------
 # CMPyMOL
-# Copyright (C) 2013 Venkatramanan Krishnamani
+# Copyright (C) 2015 Venkatramanan Krishnamani
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -62,8 +62,10 @@ except ImportError:
 try:
     if sys.platform == 'darwin':
         import PIL.Image as Image
+        import PIL.ImageDraw as ImageDraw
     else:
         import Image
+        import ImageDraw
     from PIL import ImageOps
     from operator import itemgetter
     from itertools import groupby
@@ -124,7 +126,7 @@ stridepath = ''
 pymolpath = ''
 #Contact Map variables
 cmap_atom = r'CA'
-distance_cutoff = 15          # (Float) Distance Cutoff for Contact Map Calculation
+distance_cutoff = 8          # (Float) Distance Cutoff for Contact Map Calculation
 #Image or Calculate
 calculate_cmap = 1
 image_filepath = ''
@@ -814,7 +816,7 @@ class ButtonEvents:
             charge_img_inst.set_visible(False)
 
         if charge_calculated == 0:
-            import ImageDraw
+            
             charges_location = _get_charged_sequence(FRAME)
             charged_img = Image.new('RGBA',(x_img_length,y_img_length),(0,0,0,0))
             charged_img_draw = ImageDraw.Draw(charged_img)
@@ -886,7 +888,7 @@ class ButtonEvents:
             hp_img_inst.set_visible(False)
 
         if hp_calculated == 0:
-            import ImageDraw
+            
             hp_location = _get_hp_sequence(FRAME)
             hp_img = Image.new('RGBA',(x_img_length,y_img_length),(0,0,0,0))
             hp_img_draw = ImageDraw.Draw(hp_img)
@@ -928,7 +930,7 @@ class ButtonEvents:
 
         bfacs = []
         if (type(event) is int and bfac_calculated == 1 and bfac_showing == 1) or (bfac_calculated == 0 and type(event) is not int and bfac_showing == 0):
-            import ImageDraw
+            
             pdb_handle = open(FRAME, "r" )
             for line in pdb_handle:
                 if (re.search(r'ATOM', line[0:5])):
@@ -1001,7 +1003,7 @@ class ButtonEvents:
             buttons_checked.append(aa)
         if aa_img_inst != None:
             aa_img_inst.set_visible(False)
-        import ImageDraw
+        
         aa_locations = _get_aa_sequence(FRAME, buttons_checked)
         aa_img = Image.new('RGBA',(x_img_length,y_img_length),(0,0,0,0))
         aa_img_draw = ImageDraw.Draw(aa_img)
@@ -1280,7 +1282,7 @@ class GUISetup:
             distcmd = 'distance DIST_' + str(self.selection_count) +', Region_IA, Region_IIA, cutoff=%d' % (distance_cutoff)
             connectedSocket.do(distcmd)
             #connectedSocket.do('hide labels')
-            connectedSocket.do('zoom DIST_' + str(self.selection_count) + ', animate=1')
+            connectedSocket.do('zoom DIST_' + str(self.selection_count) + ', 5, animate=1')
             connectedSocket.do('delete Region_IA')
             connectedSocket.do('delete Region_IIA')
             groupcmd = 'group SEL_' + str(self.selection_count) + ', Region_I%s Region_II%s DIST_' % (str(self.selection_count), str(self.selection_count)) + str(self.selection_count)
@@ -1318,7 +1320,8 @@ class GUISetup:
 
             first_selection.sort()
             second_selection.sort()
-            connectedSocket.do("as lines")
+            connectedSocket.do("as cartoon")
+            connectedSocket.do("show lines")
             connectedSocket.do("color gray40")
 
             if len(first_selection) == 0 or len(second_selection) == 0:
@@ -1524,7 +1527,8 @@ def loadPDBinitial(model_index):
     connectedSocket.do("reinitialize")
     connectedSocket.do("load " + FRAME + "," + os.path.basename(pdb_path)[:-4] + "," + str(model_index + 1))
     connectedSocket.do("frame " + str(model_index + 1))
-    connectedSocket.do("as lines")
+    connectedSocket.do("as cartoon")
+    connectedSocket.do("show lines")
     connectedSocket.do("color gray40")
     connectedSocket.do("set seq_view, on")
     connectedSocket.do("set seq_view_format, 1")
