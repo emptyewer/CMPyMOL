@@ -50,6 +50,11 @@ The python dependencies and PyMOL can be installed using ```apt-get``` (aptitude
  ```
 3. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and compiled into a stand-alone executable. It is recommended that the Stride executable or its installation directory is added to the $PATH environment variable. NOTE: If this executable is not detected in the $PATH variable, the secondary structure calculation will be disabled in CMPyMOL.
 
+Do the following to your ```bash``` profile ```~/.bashrc```
+```Shell
+export PATH=$PATH:<path to stride executable>
+```
+
 Install Instructions for Mac OS X
 =================================
 
@@ -83,6 +88,10 @@ Users can install the python libraries using ```easy_install``` or ```pip``` or 
  ```
 3. Stride secondary structure assignment tool. This program can be downloaded from http://webclu.bio.wzw.tum.de/stride/ and compiled into a stand-alone executable. It is recommended that the Stride executable or its installation directory is added to the $PATH environment variable. NOTE: If this executable is not detected in the $PATH variable, the secondary structure calculation will be disabled in CMPyMOL.
 
+Do the following to your terminal profile ```~/.profile```
+```Shell
+export PATH=$PATH:<path to stride executable>
+```
 
 Usage
 =====

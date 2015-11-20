@@ -60,7 +60,10 @@ except ImportError:
     print '*** Error: This software requires the "matplotlib" module ***'
 
 try:
-    import Image
+    if sys.platform == 'darwin':
+        import PIL.Image as Image
+    else:
+        import Image
     from PIL import ImageOps
     from operator import itemgetter
     from itertools import groupby
