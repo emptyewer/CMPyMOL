@@ -1621,13 +1621,14 @@ def generate_threadedcontactMap():
     import multiprocessing
     import time
     pdb = PDBfunctions()
+    
     def threading_function():
         global processed_frames
         for index in range(multiprocessing.cpu_count()):
             processed_frames = processed_frames + 1
             p = multiprocessing.Process(target=pdb.generate_contact_map, args=(pdb_path, processed_frames - 1,))
             p.start()
-            time.sleep(0.1)
+            time.sleep(1)
 
     if current_model_index == 0:
         global processed_frames
