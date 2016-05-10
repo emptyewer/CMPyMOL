@@ -200,7 +200,7 @@ OTHER DEALINGS IN THE SOFTWARE."""
         finally:
             wx.YieldIfNeeded()
 
-    def showparameters(self,event):
+    def showparameters(self, event):
         app = Info(0)
         app.MainLoop()
 
@@ -286,6 +286,7 @@ class Options(wx.Frame):
     def __init__(self, *args, **kw):
         super(Options, self).__init__(*args, **kw) 
         self.InitUI()
+
     def InitUI(self):
         pnl = wx.Panel(self)
         wx.StaticBox(pnl, label='Calculate Contact-Map based on atom...', pos=(5, 5), size=(300, 60))
