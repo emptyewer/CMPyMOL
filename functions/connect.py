@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import xmlrpclib
 import subprocess
@@ -10,9 +11,11 @@ class connect():
 
     def __init__(self, parent):
         # Create CMPyMOL directory
-        self.working_directory = os.path.join(os.environ['HOME'], '.CMapperDir')
-        if not os.path.exists(os.path.join(os.environ['HOME'], '.CMapperDir')):
-            os.makedirs(os.path.join(os.environ['HOME'], '.CMapperDir'))
+        home = os.path.expanduser('~')
+        print home
+        self.working_directory = os.path.join(home, '.CMPyMOLDir')
+        if not os.path.exists(os.path.join(home, '.CMPyMOLDir')):
+            os.makedirs(os.path.join(home, '.CMPyMOLDir'))
         self.pymol_path = ''
         self.pymol_pid = 0
         self.connected_socket = xmlrpclib.Server('http://localhost:9123')
@@ -33,7 +36,7 @@ class connect():
         location = '/Applications'
         if sys.platform == 'win32':
             file_filter = '*.exe'
-            location = os.path.join('C:\\', 'Program Files')
+            location = os.path.join('C:\Program Files')
 
         temp_path = str(QtGui.QFileDialog.getOpenFileName(QtGui.QFileDialog(),
                                                                 "Locate PyMOL or MacPyMOL executable",
@@ -42,7 +45,7 @@ class connect():
         if sys.platform == 'darwin' and os.path.basename(temp_path) == 'MacPyMOL.app':
             self.pymol_path = os.path.join(temp_path, 'Contents', 'MacOS', 'MacPyMOL')
         else:
-            self.pymol_path = temp_path
+            self.pymol_path = re.sub(r'/', r'\\', temp_path)
         self.write_pymol_path()
 
     def write_pymol_path(self):

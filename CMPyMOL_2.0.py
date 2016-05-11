@@ -2,6 +2,7 @@ import os
 import sys
 import signal
 from copy import copy
+import numpy as np
 from PyQt4 import QtCore, QtGui, uic
 
 import functions.connect as connect
@@ -212,10 +213,6 @@ class CMPyMOL_GUI(QtGui.QMainWindow, form_class):
         else:
             self.contactmap_fig.remove_bfactors()
             self.bfactor_showing = False
-
-
-
-
 
     def append_status_text(self, text):
         cursor = self.status_text.textCursor()

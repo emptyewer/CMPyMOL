@@ -6,6 +6,7 @@ if sys.platform == 'darwin':
     import py2app
 elif sys.platform == 'win32':
     import py2exe
+    import matplotlib
 
 def find_data_files(sources, targets, patterns):
     """Locates the specified data-files and returns the matches
@@ -51,11 +52,11 @@ OPTIONS = {'argv_emulation': True,
            'includes': INCLUDES,
            'excludes': EXCLUDES,
            }
-DATA_FILES = find_data_files(['ui', 'tools', 'overlays', 'graphs', 'functions'],
-                             ['ui', 'tools', 'overlays', 'graphs', 'functions'],
-                             ['*.ui', '*', '*.py', '*.py', '*.py'])
 
 if sys.platform == 'darwin':
+    DATA_FILES = find_data_files(['ui', 'tools', 'overlays', 'graphs', 'functions'],
+                                 ['ui', 'tools', 'overlays', 'graphs', 'functions'],
+                                 ['*.ui', '*', '*.py', '*.py', '*.py'])
     setup(
         app=APP,
         name='CMPyMOL',
@@ -65,6 +66,9 @@ if sys.platform == 'darwin':
         data_files=DATA_FILES
     )
 elif sys.platform == 'win32':
+    DATA_FILES = find_data_files(['ui', 'tools', 'overlays', 'graphs', 'functions', 'dlls'],
+                                 ['ui', 'tools', 'overlays', 'graphs', 'functions', ''],
+                                 ['*.ui', '*', '*.py', '*.py', '*.py', '*'])
     origIsSystemDLL = py2exe.build_exe.isSystemDLL
     def isSystemDLL(pathname):
             if os.path.basename(pathname).lower() in ("msvcp71.dll", "dwmapi.dll", "'msvcp90.dll'"):
@@ -75,15 +79,17 @@ elif sys.platform == 'win32':
         version='2.0',
         description='CMPyMOL',
         author='Venkatramanan Krishnamani',
-        windows=[{"script":'CMPyMOL_2.0.py',
+        windows=[{"script": 'CMPyMOL_2.0.py',
                    "icon_resources": [(1, "icon/Icon.ico")],
-                   "dest_base":"CMPyMOL"
+                   "dest_base": "CMPyMOL"
                 }],
-        data_files=DATA_FILES,
+        data_files=DATA_FILES + matplotlib.get_py2exe_datafiles(),
         options={"py2exe": {'includes': INCLUDES,
                             "optimize": 2,
                             "compressed": 2,
-                            "bundle_files": 1,
-                            "dist_dir": "dist\CMPyMOL"
-                            }}
+                            "bundle_files": 2,
+                            "dist_dir": "dist\CMPyMOL",
+                            "dll_excludes": ["numpy-atlas.dll"]
+                            }},
+        zipfile=None
     )
