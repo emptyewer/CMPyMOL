@@ -80,7 +80,25 @@ elif sys.platform == 'win32':
         description='CMPyMOL',
         author='Venkatramanan Krishnamani',
         windows=[{"script": 'CMPyMOL_2.0.py',
-                   "icon_resources": [(1, "icon/Icon.ico")],
+                   "icon_resources": [(0, "icon/Icon.ico")],
+                   "dest_base": "CMPyMOL"
+                }],
+        data_files=DATA_FILES + matplotlib.get_py2exe_datafiles(),
+        options={"py2exe": {'includes': INCLUDES,
+                            "optimize": 2,
+                            "compressed": 2,
+                            "bundle_files": 2,
+                            "dist_dir": "dist\CMPyMOL",
+                            "dll_excludes": ["numpy-atlas.dll"]
+                            }},
+        zipfile=None
+    )
+    setup(
+        version='2.0',
+        description='CMPyMOL',
+        author='Venkatramanan Krishnamani',
+        windows=[{"script": 'CMPyMOL_2.0.py',
+                   "icon_resources": [(0, "icon/Icon.ico")],
                    "dest_base": "CMPyMOL"
                 }],
         data_files=DATA_FILES + matplotlib.get_py2exe_datafiles(),
