@@ -54,9 +54,9 @@ OPTIONS = {'argv_emulation': True,
            }
 
 if sys.platform == 'darwin':
-    DATA_FILES = find_data_files(['ui', 'tools', 'overlays', 'graphs', 'functions'],
-                                 ['ui', 'tools', 'overlays', 'graphs', 'functions'],
-                                 ['*.ui', '*', '*.py', '*.py', '*.py'])
+    DATA_FILES = find_data_files(['ui', 'tools', 'overlays', 'graphs', 'functions', 'icon'],
+                                 ['ui', 'tools', 'overlays', 'graphs', 'functions', 'icon'],
+                                 ['*.ui', '*', '*.py', '*.py', '*.py', 'Icon_256x256.png'])
     setup(
         app=APP,
         name='CMPyMOL',
@@ -66,9 +66,9 @@ if sys.platform == 'darwin':
         data_files=DATA_FILES
     )
 elif sys.platform == 'win32':
-    DATA_FILES = find_data_files(['ui', 'tools', 'overlays', 'graphs', 'functions', 'dlls'],
-                                 ['ui', 'tools', 'overlays', 'graphs', 'functions', ''],
-                                 ['*.ui', '*', '*.py', '*.py', '*.py', '*'])
+    DATA_FILES = find_data_files(['ui', 'tools', 'overlays', 'graphs', 'functions', 'dlls', 'icon'],
+                                 ['ui', 'tools', 'overlays', 'graphs', 'functions', '', 'icon'],
+                                 ['*.ui', '*', '*.py', '*.py', '*.py', '*', 'Icon_256x256.png'])
     origIsSystemDLL = py2exe.build_exe.isSystemDLL
     def isSystemDLL(pathname):
             if os.path.basename(pathname).lower() in ("msvcp71.dll", "dwmapi.dll", "'msvcp90.dll'"):

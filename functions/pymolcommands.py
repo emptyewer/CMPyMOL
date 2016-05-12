@@ -12,8 +12,8 @@ class pymolcommands():
     def load_pdb(self):
         file_filter = "*.pdb"
         self.pdb_path = str(QtGui.QFileDialog.getOpenFileName(QtGui.QFileDialog(),
-                                                              "Load PDB...", os.path.expanduser("~"),
-                                                              "Executables (%s)" % file_filter))
+                                                              caption="Load PDB...",
+                                                              filter="PDB files (%s)" % file_filter))
         self.parent.append_status_text(">>> PDB %s loaded" % (os.path.basename(self.pdb_path)))
 
 

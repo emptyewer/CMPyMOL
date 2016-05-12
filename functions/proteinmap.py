@@ -22,6 +22,7 @@ class pmap():
         self.bfactor_cutoff = 25
         self.bfactors_ca = {}
         self.bfactors_cb = {}
+        self.bfactors_present = False
         self.residue_names_ca = {}
         self.residue_numbers_ca = {}
         self.residue_names_cb = {}
@@ -97,7 +98,12 @@ class pmap():
                     self.ca_coordinates[self.model_count][index_ca] = (float(line_split[6+shift]),
                                                                        float(line_split[7+shift]),
                                                                        float(line_split[8+shift]))
-                    self.bfactors_ca[self.model_count][index_ca] = float(line_split[10+shift])
+                    try:
+                        self.bfactors_ca[self.model_count][index_ca] = float(line_split[10+shift])
+                        if float(line_split[10 + shift]) > 0.0:
+                            self.bfactors_present = True
+                    except IndexError:
+                        self.bfactors_ca[self.model_count][index_ca] = 0.0
                     self.residue_names_ca[self.model_count][index_ca] = line_split[3]
                     self.residue_numbers_ca[self.model_count][index_ca] = resid
                     if shift == 0:
@@ -112,7 +118,13 @@ class pmap():
                     self.cb_coordinates[self.model_count][index_cb] = (float(line_split[6+shift]),
                                                                        float(line_split[7+shift]),
                                                                        float(line_split[8+shift]))
-                    self.bfactors_cb[self.model_count][index_cb] = float(line_split[10 + shift])
+                    try:
+                        self.bfactors_cb[self.model_count][index_cb] = float(line_split[10 + shift])
+                        if float(line_split[10 + shift]) > 0.0:
+                            self.bfactors_present = True
+                    except IndexError:
+                        self.bfactors_cb[self.model_count][index_cb] = 0.0
+
                     self.residue_names_cb[self.model_count][index_cb] = line_split[3]
                     self.residue_numbers_cb[self.model_count][index_cb] = resid
                     if shift == 0:

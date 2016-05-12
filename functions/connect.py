@@ -39,9 +39,10 @@ class connect():
             location = os.path.join('C:\Program Files')
 
         temp_path = str(QtGui.QFileDialog.getOpenFileName(QtGui.QFileDialog(),
-                                                                "Locate PyMOL or MacPyMOL executable",
-                                                                os.path.expanduser(location),
-                                                                "Executables (%s)" % file_filter))
+                                                          caption="Locate PyMOL or MacPyMOL executable",
+                                                          directory=os.path.expanduser(location),
+                                                          filter="Executables (%s)" % file_filter))
+
         if sys.platform == 'darwin' and os.path.basename(temp_path) == 'MacPyMOL.app':
             self.pymol_path = os.path.join(temp_path, 'Contents', 'MacOS', 'MacPyMOL')
         else:

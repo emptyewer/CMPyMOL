@@ -77,11 +77,11 @@ class About_Dialog(QtGui.QDialog):
         self.label_2.setMaximumSize(QtCore.QSize(256, 100))
         self.label_2.setText(_fromUtf8(""))
         if sys.platform == 'darwin':
-            self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("Icon.png")))
+            self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("icon/Icon_256x256.png")))
         elif sys.platform == 'linux2' or sys.platform == 'linux':
-            self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("Icon.png")))
+            self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("icon/Icon_256x256.png")))
         elif sys.platform == 'win32':
-            self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("Icon.png")))
+            self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("icon/Icon_256x256.png")))
         self.label_2.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.verticalLayout.addWidget(self.label_2, QtCore.Qt.AlignHCenter)
@@ -118,7 +118,7 @@ class About_Dialog(QtGui.QDialog):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'.Helvetica Neue DeskInterface\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Liberation Sans\'; font-size:11pt;\">This software is licensed under the</span><span style=\" font-family:\'Liberation Sans\'; font-size:11pt; font-weight:600;\"> MIT License. </span><span style=\" font-family:\'Liberation Sans\'; font-size:11pt;\">It is a free software license that permits resue within proprietary software provided all copies of this software include a copy of the </span><span style=\" font-family:\'Liberation Sans\'; font-size:11pt; font-weight:600;\">MIT License</span><span style=\" font-family:\'Liberation Sans\'; font-size:11pt;\"> terms and copyright notice.</span></p></body></html>", None))
-        self.pushButton_2.setText(_translate("Dialog", "License", None))
+        self.pushButton_2.setText(_translate("Dialog", "STRIDE Copyright Notice", None))
         self.pushButton_2.clicked.connect(self.showLicense)
 
     def showLicense(self):

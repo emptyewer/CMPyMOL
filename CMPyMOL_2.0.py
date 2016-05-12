@@ -84,6 +84,13 @@ class CMPyMOL_GUI(QtGui.QMainWindow, form_class):
                 self.variance_map_btn.setEnabled(True)
                 self.next_btn.setEnabled(True)
                 self.prev_btn.setEnabled(True)
+
+            if not self.protein_map.bfactors_present:
+                self.bfactor_btn.setEnabled(False)
+                self.bfactor_slider.setEnabled(False)
+            else:
+                self.bfactor_btn.setEnabled(True)
+                self.bfactor_slider.setEnabled(True)
             self.overlays.calculate_secondary_structure()
 
     @QtCore.pyqtSlot()
