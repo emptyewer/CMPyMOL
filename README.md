@@ -10,3 +10,7 @@ Requests
 ========
 Users are welcome to send me an email to request the addition of a specific feature or to report a bug.
 
+Paper
+=====
+
+http://dx.doi.org/10.1101/084269
