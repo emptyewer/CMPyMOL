@@ -45,6 +45,8 @@ class connect():
 
         if sys.platform == 'darwin' and os.path.basename(temp_path) == 'MacPyMOL.app':
             self.pymol_path = os.path.join(temp_path, 'Contents', 'MacOS', 'MacPyMOL')
+        else if sys.platform == 'linux':
+            self.pymol_path = temp_path
         else:
             self.pymol_path = re.sub(r'/', r'\\', temp_path)
         self.write_pymol_path()
