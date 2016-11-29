@@ -37,6 +37,9 @@ class connect():
         if sys.platform == 'win32':
             file_filter = '*.exe'
             location = os.path.join('C:\Program Files')
+        elif sys.platform == 'linux':
+            file_filter = '*.*'
+            location = os.path.join('~')
 
         temp_path = str(QtGui.QFileDialog.getOpenFileName(QtGui.QFileDialog(),
                                                           caption="Locate PyMOL or MacPyMOL executable",
@@ -45,9 +48,9 @@ class connect():
 
         if sys.platform == 'darwin' and os.path.basename(temp_path) == 'MacPyMOL.app':
             self.pymol_path = os.path.join(temp_path, 'Contents', 'MacOS', 'MacPyMOL')
-        else if sys.platform == 'linux':
+        elif sys.platform == 'linux':
             self.pymol_path = temp_path
-        else:
+        elif sys.platform == 'win32':
             self.pymol_path = re.sub(r'/', r'\\', temp_path)
         self.write_pymol_path()
 
